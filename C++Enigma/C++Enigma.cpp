@@ -5,28 +5,33 @@ using namespace std;
 
 class motor
 {
-    public: char cipherChar(char c, char* alphabet0, char* alphabet1)
+    public: char cipherChar(char c, char* alphabetTo, int iNum)
     {
-        return alphabet1[indexOf(c, alphabet0)];
+        return alphabetTo[indexOf(c, alphabet(iNum))];
     }
 
     private: int indexOf(char c, char* arr)
     {
         for (int i = 0; i < 26; i++)
+        {
+#if DEBUG
+            cout << i << " : " << arr[i] << endl;
+#endif
             if (arr[i] == c)
+            {
+#if DEBUG
+                cout << c << " at index " << i;
+#endif
                 return i;
-
+            }
+        }
+            
+#if DEBUG
+        cout << "????";
+#endif
         return -1;
     }
-};
-
-class enigma
-{
-    private: char firstAlphabet[26] = { 'B', 'D', 'F', 'H', 'J', 'L', 'C', 'P', 'R', 'T', 'X', 'V', 'Z', 'N', 'Y', 'E', 'I', 'W', 'G', 'A', 'K', 'M', 'U', 'S', 'Q', 'O' };
-    private: char secondAlphabet[26] = { 'A', 'J', 'D', 'K', 'S', 'I', 'R', 'U', 'X', 'B', 'L', 'H', 'W', 'T', 'M', 'C', 'Q', 'G', 'Z', 'N', 'P', 'Y', 'F', 'V', 'O', 'E' };
-    private: char thirdAlphabet[26] = { 'E', 'K', 'M', 'F', 'L', 'G', 'D', 'Q', 'V', 'Z', 'N', 'T', 'O', 'W', 'Y', 'H', 'X', 'U', 'S', 'P', 'A', 'I', 'B', 'R', 'C', 'J' };
-    private: char reverseAlphabet[26] = { 'Y', 'R', 'U', 'H', 'Q', 'S', 'L', 'D', 'P', 'X', 'N', 'G', 'O', 'K', 'M', 'I', 'E', 'B', 'F', 'Z', 'C', 'W', 'V', 'J', 'A', 'T' };
-    private: char* standardAlphabet(int start)
+    private: char* alphabet(int start)
     {
         char arr[26];
         for (int i = 'A'; i <= 'Z'; i++)
@@ -41,13 +46,26 @@ class enigma
             }
             arr[i - 'A'] = letter;
         }
+    
+    #if DEBUG
+        for (char c : arr)
+            cout << c << " ";
+        cout << endl;
+    #endif
+    
         return arr;
-    }   
+    }
+};
 
-    motor third = motor();
-    motor second = motor();
-    motor first = motor();
-    motor reverse = motor();
+class enigma
+{
+    private: char firstAlphabet[26] = { 'E', 'K', 'M', 'F', 'L', 'G', 'D', 'Q', 'V', 'Z', 'N', 'T', 'O', 'W', 'Y', 'H', 'X', 'U', 'S', 'P', 'A', 'I', 'B', 'R', 'C', 'J' };
+    private: char secondAlphabet[26] = { 'A', 'J', 'D', 'K', 'S', 'I', 'R', 'U', 'X', 'B', 'L', 'H', 'W', 'T', 'M', 'C', 'Q', 'G', 'Z', 'N', 'P', 'Y', 'F', 'V', 'O', 'E' };
+    private: char thirdAlphabet[26] = { 'B', 'D', 'F', 'H', 'J', 'L', 'C', 'P', 'R', 'T', 'X', 'V', 'Z', 'N', 'Y', 'E', 'I', 'W', 'G', 'A', 'K', 'M', 'U', 'S', 'Q', 'O' };
+    private: char reverseAlphabet[26] = { 'Y', 'R', 'U', 'H', 'Q', 'S', 'L', 'D', 'P', 'X', 'N', 'G', 'O', 'K', 'M', 'I', 'E', 'B', 'F', 'Z', 'C', 'W', 'V', 'J', 'A', 'T' };
+    private: char testAlphabet[26] = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H','I','J','K','L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+
+    motor motors = motor();
 
     public: string cipher(string text)
     {
@@ -55,14 +73,13 @@ class enigma
         string result = "";
         for (int i = 0; i < text.length(); i++)
         {
-            temp = third.cipherChar(text[i], standardAlphabet(i), thirdAlphabet);
-            temp = second.cipherChar(temp, thirdAlphabet, secondAlphabet);
-            //temp = first.cipherChar(temp, secondAlphabet, firstAlphabet);
-            //temp = reverse.cipherChar(temp, firstAlphabet, reverseAlphabet);
-            //temp = reverse.cipherChar(temp, reverseAlphabet, firstAlphabet);
-            //temp = first.cipherChar(temp, firstAlphabet, secondAlphabet);
-            //temp = first.cipherChar(temp, secondAlphabet, thirdAlphabet);
-            //temp = first.cipherChar(temp, thirdAlphabet, standardAlphabet(i));
+            temp = motors.cipherChar(text[i], secondAlphabet, i);
+            //temp = motors.cipherChar(temp, firstAlphabet, i);
+            //temp = motors.cipherChar(temp, reverseAlphabet, i);
+            //temp = motors.cipherChar(temp, firstAlphabet, i);
+            //temp = motors.cipherChar(temp, secondAlphabet, i);
+            //temp = motors.cipherChar(temp, thirdAlphabet, i);
+            //temp = motors.cipherChar(temp, testAlphabet, i);
             result += temp;
         }
         return result;
@@ -72,5 +89,6 @@ class enigma
 int main()
 {
     enigma e = enigma();
-    cout << e.cipher("PROGRAMOWANIE");
+    cout << e.cipher("P");
+    //cout << e.cipher("F");
 }
