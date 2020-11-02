@@ -140,7 +140,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="EnigmaMachine.cpp" />
     <ClCompile Include="Program.cpp" />
+    <ClCompile Include="Rotor.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="EnigmaMachine.h" />
+    <ClInclude Include="Rotor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
