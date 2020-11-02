@@ -62,14 +62,14 @@ class rotor
 	}
 };
 
-class enigma
+class enigmaMachine
 {
 	private: rotor rotor1;
 	private: rotor rotor2;
 	private: rotor rotor3;
 	private: rotor rotorR;
 
-	public: enigma(rotor rotor3, rotor rotor2, rotor rotor1, rotor rotorR)
+	public: enigmaMachine(rotor rotor3, rotor rotor2, rotor rotor1, rotor rotorR)
 	{
 		this->rotor3 = rotor3;
 		this->rotor2 = rotor2;
@@ -105,10 +105,10 @@ int main()
 	char alphabet1[26] = { 'E', 'K', 'M', 'F', 'L', 'G', 'D', 'Q', 'V', 'Z', 'N', 'T', 'O', 'W', 'Y', 'H', 'X', 'U', 'S', 'P', 'A', 'I', 'B', 'R', 'C', 'J' };
 	char alphabetR[26] = { 'Y', 'R', 'U', 'H', 'Q', 'S', 'L', 'D', 'P', 'X', 'N', 'G', 'O', 'K', 'M', 'I', 'E', 'B', 'F', 'Z', 'C', 'W', 'V', 'J', 'A', 'T' };
 
-	enigma e = enigma(rotor(alphabet3, true),
+	enigmaMachine enigma = enigmaMachine(rotor(alphabet3, true),
 					  rotor(alphabet2, false),
 					  rotor(alphabet1, false),
 					  rotor(alphabetR, false));
 	
-	cout << e.cipher("TEST") << endl;
+	cout << enigma.cipher("TEST") << endl;
 }
