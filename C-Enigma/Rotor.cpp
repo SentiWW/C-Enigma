@@ -1,4 +1,5 @@
 #include <string>
+#include <iostream>
 #include "Rotor.h"
 
 using namespace std;
@@ -11,7 +12,7 @@ Rotor::Rotor(char rotorAlphabet[26], bool isFirst)
 	this->isFirst = isFirst;
 }
 
-char Rotor::cipherChar(char letter, unsigned int charI, bool reversing)
+char Rotor::cipherChar(char letter, unsigned int charI)
 {
 	char result;
 
@@ -30,6 +31,8 @@ char Rotor::cipherChar(char letter, unsigned int charI, bool reversing)
 			result = standardAlphabet(charI)[indexOf(letter, rotorAlphabet)];
 	}
 
+	reversing = reversing ? false : true;
+
 	return result;
 }
 
@@ -40,7 +43,7 @@ string Rotor::standardAlphabet(unsigned int start)
 
 	for (unsigned short i = 'A'; i <= 'Z'; i++)
 	{
-		int letter = i + start;
+		unsigned int letter = i + start;
 		while (letter < 'A' || 'Z' < letter)
 			if (letter < 'A')
 				letter += 26;
@@ -57,5 +60,6 @@ short Rotor::indexOf(char letter, string alphabet)
 	for (unsigned short i = 0; i < alphabet.length(); i++)
 		if (letter == alphabet[i])
 			return i;
-	return -1;
+
+	throw runtime_error("Index not of "+to_string(letter) +" found in supplied alphabet");
 }

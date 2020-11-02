@@ -20,13 +20,19 @@ string EnigmaMachine::cipher(string text)
 
 	for (unsigned int i = 0; i < text.length(); i++)
 	{
-		temp = rotor3.cipherChar(text[i], i, false);
-		temp = rotor2.cipherChar(temp, i, false);
-		temp = rotor1.cipherChar(temp, i, false);
-		temp = rotorR.cipherChar(temp, i, false);
-		temp = rotor1.cipherChar(temp, i, true);
-		temp = rotor2.cipherChar(temp, i, true);
-		temp = rotor3.cipherChar(temp, i, true);
+		if (text[i] == ' ')
+		{
+			result += ' ';
+			continue;
+		}
+
+		temp = rotor3.cipherChar(text[i], i);
+		temp = rotor2.cipherChar(temp, i);
+		temp = rotor1.cipherChar(temp, i);
+		temp = rotorR.cipherChar(temp, i);
+		temp = rotor1.cipherChar(temp, i);
+		temp = rotor2.cipherChar(temp, i);
+		temp = rotor3.cipherChar(temp, i);
 		result += temp;
 	}
 

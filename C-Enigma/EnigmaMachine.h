@@ -7,10 +7,7 @@
 class EnigmaMachine
 {
 	private: 
-		Rotor rotor1;
-		Rotor rotor2;
-		Rotor rotor3;
-		Rotor rotorR;
+		Rotor rotor1, rotor2, rotor3, rotorR;
 	
 	public: 
 		EnigmaMachine(Rotor rotor3, Rotor rotor2, Rotor rotor1, Rotor rotorR);

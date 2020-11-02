@@ -12,9 +12,10 @@ int main()
 	char alphabetR[26] = { 'Y', 'R', 'U', 'H', 'Q', 'S', 'L', 'D', 'P', 'X', 'N', 'G', 'O', 'K', 'M', 'I', 'E', 'B', 'F', 'Z', 'C', 'W', 'V', 'J', 'A', 'T' };
 
 	EnigmaMachine enigma = EnigmaMachine(Rotor(alphabet3, true),
-					  Rotor(alphabet2, false),
-					  Rotor(alphabet1, false),
-					  Rotor(alphabetR, false));
+										 Rotor(alphabet2, false),
+										 Rotor(alphabet1, false),
+										 Rotor(alphabetR, false));
 	
-	cout << enigma.cipher("PROGRAMOWANIE") << endl;
+	cout << "Ciphered: " << enigma.cipher("TEST TEXT") << endl;
+	cout << "Deciphered: " << enigma.cipher(enigma.cipher("TEST TEXT")) << endl;
 }
