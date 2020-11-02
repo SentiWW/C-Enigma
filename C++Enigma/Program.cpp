@@ -6,11 +6,11 @@ using namespace std;
 class rotor
 {
 	private: char* rotorAlphabet;
-	private: bool isFirst;
+	private: bool isFirst = false;
 
 	public: rotor() { }
 
-	public: rotor(char rotorAlphabet[26], bool isFirst)
+	public: rotor(char rotorAlphabet[26], bool isFirst = false)
 	{
 		this->rotorAlphabet = rotorAlphabet;
 		this->isFirst = isFirst;
@@ -20,17 +20,21 @@ class rotor
 	{
 		char result;
 
-		if (isFirst && !reversing)
-			result = rotorAlphabet[indexOf(letter, standardAlphabet(charI))];
-		else if (isFirst && reversing)
-			result = standardAlphabet(charI)[indexOf(letter, rotorAlphabet)];
-		else
+		if (!isFirst)
 		{
 			if (!reversing)
 				result = rotorAlphabet[indexOf(letter, standardAlphabet(0))];
 			else
 				result = standardAlphabet(0)[indexOf(letter, rotorAlphabet)];
 		}
+		else
+		{
+			if (!reversing)
+				result = rotorAlphabet[indexOf(letter, standardAlphabet(charI))];
+			else
+				result = standardAlphabet(charI)[indexOf(letter, rotorAlphabet)];
+		}
+
 		return result;
 	}
 
@@ -41,7 +45,7 @@ class rotor
 
 		for (unsigned short i = 'A'; i <= 'Z'; i++)
 		{
-			short letter = i + start;
+			int letter = i + start;
 			while (letter < 'A' || 'Z' < letter)
 				if (letter < 'A')
 					letter += 26;
@@ -110,5 +114,5 @@ int main()
 					  rotor(alphabet1, false),
 					  rotor(alphabetR, false));
 	
-	cout << enigma.cipher("TEST") << endl;
+	cout << enigma.cipher("PROGRAMOWANIE") << endl;
 }
