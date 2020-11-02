@@ -6,17 +6,32 @@ using namespace std;
 class rotor
 {
 	private: char* rotorAlphabet;
+	private: bool isFirst;
 
 	public: rotor() { }
 
-	public: rotor(char rotorAlphabet[26])
+	public: rotor(char rotorAlphabet[26], bool isFirst)
 	{
 		this->rotorAlphabet = rotorAlphabet;
+		this->isFirst = isFirst;
 	}
 
-	public: char cipherChar(char letter, unsigned int charI)
+	public: char cipherChar(char letter, unsigned int charI, bool reversing)
 	{
-		return rotorAlphabet[standardAlphabet(charI)[letter - 'A'] - 'A'];
+		char result;
+
+		if (isFirst && !reversing)
+			result = rotorAlphabet[indexOf(letter, standardAlphabet(charI))];
+		else if (isFirst && reversing)
+			result = standardAlphabet(charI)[indexOf(letter, rotorAlphabet)];
+		else
+		{
+			if (!reversing)
+				result = rotorAlphabet[indexOf(letter, standardAlphabet(0))];
+			else
+				result = standardAlphabet(0)[indexOf(letter, rotorAlphabet)];
+		}
+		return result;
 	}
 
 	private: static string standardAlphabet(unsigned int start)
@@ -37,6 +52,14 @@ class rotor
 			
 		return result;
 	}
+
+	private: static short indexOf(char letter, string alphabet)
+	{
+		for (unsigned short i = 0; i < alphabet.length(); i++)
+			if (letter == alphabet[i])
+				return i;
+		return -1;
+	}
 };
 
 class enigma
@@ -46,26 +69,32 @@ class enigma
 	private: rotor rotor3;
 	private: rotor rotorR;
 
-	public: enigma(rotor rotor1, rotor rotor2, rotor rotor3, rotor rotorR)
+	public: enigma(rotor rotor3, rotor rotor2, rotor rotor1, rotor rotorR)
 	{
-		this->rotor1 = rotor1;
-		this->rotor2 = rotor2;
 		this->rotor3 = rotor3;
+		this->rotor2 = rotor2;
+		this->rotor1 = rotor1;
 		this->rotorR = rotorR;
 	}
 
-	public: char cipher(string text)
+	public: string cipher(string text)
 	{
-		/*string result = "";
-		
+		string result = "";
+		char temp;
+
 		for (unsigned int i = 0; i < text.length(); i++)
 		{
-			
+			temp = rotor3.cipherChar(text[i], i, false);
+			temp = rotor2.cipherChar(temp, i, false);
+			temp = rotor1.cipherChar(temp, i, false);
+			temp = rotorR.cipherChar(temp, i, false);
+			temp = rotor1.cipherChar(temp, i, true);
+			temp = rotor2.cipherChar(temp, i, true);
+			temp = rotor3.cipherChar(temp, i, true);
+			result += temp;
 		}
 
-		return result;*/
-
-		return rotor3.cipherChar('R', 1);
+		return result;
 	}
 };
 
@@ -76,10 +105,10 @@ int main()
 	char alphabet1[26] = { 'E', 'K', 'M', 'F', 'L', 'G', 'D', 'Q', 'V', 'Z', 'N', 'T', 'O', 'W', 'Y', 'H', 'X', 'U', 'S', 'P', 'A', 'I', 'B', 'R', 'C', 'J' };
 	char alphabetR[26] = { 'Y', 'R', 'U', 'H', 'Q', 'S', 'L', 'D', 'P', 'X', 'N', 'G', 'O', 'K', 'M', 'I', 'E', 'B', 'F', 'Z', 'C', 'W', 'V', 'J', 'A', 'T' };
 
-	enigma e = enigma(rotor(alphabet1),
-					  rotor(alphabet2),
-					  rotor(alphabet3),
-					  rotor(alphabetR));
+	enigma e = enigma(rotor(alphabet3, true),
+					  rotor(alphabet2, false),
+					  rotor(alphabet1, false),
+					  rotor(alphabetR, false));
 	
-	cout << e.cipher("PROGRAMOWANIE") << endl;
+	cout << e.cipher("TEST") << endl;
 }
